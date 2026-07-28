@@ -9,8 +9,18 @@ class Peminjaman extends Model
 {
     use HasFactory;
 
-    // Paksa menggunakan nama tabel tunggal universal
-    protected $table = 'peminjaman';
+    // Tambahkan baris ini (sesuaikan dengan nama tabel di database MySQL kamu)
+    protected $table = 'peminjaman'; 
 
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class, 'car_id');
+    }
 }

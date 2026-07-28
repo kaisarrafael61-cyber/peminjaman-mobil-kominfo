@@ -1,73 +1,83 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+// Import Semua Controller
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\LokasiController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PeminjamanController;
-use App\Http\Controllers\AuthController;
 
-// =========================================================================
-// ROUTE AUTENTIKASI (LOGIN, REGISTER, FORGOT PASSWORD)
-// =========================================================================
+/*
+|--------------------------------------------------------------------------
+| ROUTE PUBLIC (Akses Bebas Tanpa Login)
+|--------------------------------------------------------------------------
+*/
 
+// Halaman Utama / Landing Page
 Route::get('/', function () {
-    return view('login');
+    return view('welcome'); 
 });
 
-// Jalur GET untuk menampilkan halaman login (mengakses web)
+// Form Login
 Route::get('/login-page', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
     return view('login');
 })->name('login');
 
-// Jalur POST untuk menerima data ketika tombol Login ditekan
-Route::post('/login-process', function (\Illuminate\Http\Request $request) {
-    // PERBAIKAN: Validasi disesuaikan dengan input dari form HTML (Username & Password)
-    $request->validate([
-        'username' => ['required'],
-        'password' => ['required'],
-    ]);
+// Proses Login (Menggunakan PeminjamanController)
+Route::post('/login-process', [PeminjamanController::class, 'login'])->name('login.process');
 
-    // Simulasi bypass login sukses langsung dialihkan ke dashboard
-    return redirect('/dashboard');
+// Register & Forgot Password
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.forgot');
+
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE PROTECTED (Wajib Login)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->group(function () {
+    
+    // Dashboard Utama
+    Route::get('/dashboard', function () {
+        return view('dashboard'); 
+    })->name('dashboard');
+
+    // Ketersediaan Mobil
+    Route::get('/ketersediaan-mobil', [CarController::class, 'index'])->name('ketersediaan.index');
+
+    // FITUR PEMINJAMAN MOBIL (USER)
+    Route::post('/peminjaman/store', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+    
+    // Route Pengembalian & Upload Foto Sesudah (Menggunakan match GET & POST untuk cegah error 405)
+    Route::match(['get', 'post'], '/peminjaman/{id}/foto-sesudah', [PeminjamanController::class, 'uploadFotoSesudah'])->name('peminjaman.upload-sesudah');
+    Route::match(['get', 'post'], '/peminjaman/{id}/kembalikan', [PeminjamanController::class, 'uploadFotoSesudah'])->name('peminjaman.kembalikan');
+
+    // FITUR PEMINJAMAN MOBIL (ADMIN)
+    Route::get('/admin/peminjaman', [PeminjamanController::class, 'adminIndex'])->name('admin.peminjaman.index');
+    Route::post('/peminjaman/{id}/update-status', [PeminjamanController::class, 'updateStatus'])->name('peminjaman.update-status');
+
+    // Lokasi & Antar Jemput
+    Route::get('/lokasi-antar-jemput', [LokasiController::class, 'index'])->name('lokasi.index');
+
+    // Fitur Chat / Coordination Center
+    Route::get('/pesan/{receiverId?}', [MessageController::class, 'index'])->name('pesan.index');
+    Route::post('/pesan/send', [MessageController::class, 'store'])->name('pesan.send');
+
+    // Logout
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
+    })->name('logout');
+
 });
-
-// Jalur Tampilan Halaman Register & Lupa Password (GET)
-Route::get('/register-page', function () {
-    return view('register');
-});
-
-Route::get('/forgot-password-page', function () {
-    return view('forgot-password');
-});
-
-// Jalur Eksekusi Data Form ke Controller (POST)
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-
-
-// =========================================================================
-// ROUTE APLIKASI (DASHBOARD & PEMINJAMAN)
-// =========================================================================
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
-
-Route::get('/pinjam', function () {
-    return view('pinjam');
-});
-
-// Jalur untuk melihat halaman "Pesanan Anda"
-Route::get('/pesanan', [PeminjamanController::class, 'index'])->name('pesanan.index');
-
-// Jalur API/Action untuk memproses kiriman data dari form ke database
-Route::post('/pinjam/store', [PeminjamanController::class, 'store'])->name('pinjam.store');
-
-
-// =========================================================================
-// ROUTE KHUSUS KABAG (PERSETUJUAN)
-// =========================================================================
-
-// Halaman daftar persetujuan untuk Kabag
-Route::get('/kabag/persetujuan', [PeminjamanController::class, 'kabagIndex'])->name('kabag.index');
-
-// Route untuk aksi Setuju / Tolak
-Route::post('/kabag/persetujuan/{id}/{status}', [PeminjamanController::class, 'kabagUpdateStatus'])->name('kabag.status');

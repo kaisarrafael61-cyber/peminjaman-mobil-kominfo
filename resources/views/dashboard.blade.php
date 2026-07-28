@@ -6,233 +6,359 @@
     <title>Dashboard Peminjaman Mobil Diskominfo Kubar</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f1f5f9;
+        }
+        /* Aksen Pola Halus untuk Latar Belakang Gradasi */
+        .ethnic-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0), radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans antialiased min-h-screen flex">
+<body class="text-slate-800 antialiased">
 
-    <aside class="w-64 bg-slate-900 text-slate-300 min-h-screen flex flex-col justify-between hidden md:flex shadow-xl shrink-0">
-        <div>
-            <div class="p-6 border-b border-slate-800 flex items-center gap-3">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-lg shadow-md">
-                    <i class="fa-solid fa-car-side"></i>
+    <div class="hidden md:flex min-h-screen">
+        <aside class="w-72 bg-gradient-to-b from-[#1b4cc7] via-[#2563eb] to-[#1e40af] text-white flex flex-col justify-between p-6 shadow-xl relative overflow-hidden flex-shrink-0">
+            <div class="absolute inset-0 opacity-10 pointer-events-none ethnic-pattern"></div>
+            
+            <div class="z-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="bg-[#05152b] p-2.5 rounded-xl text-cyan-400 shadow-md">
+                        <i class="fa-solid fa-car text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-black tracking-wider text-sm">MOBI-KUBAR</h1>
+                        <p class="text-[9px] text-amber-300 font-bold uppercase tracking-widest">Diskominfo App</p>
+                    </div>
                 </div>
+
+                <p class="text-[10px] font-bold text-blue-200/60 tracking-widest uppercase mb-2 px-2">Menu Utama</p>
+                <nav class="space-y-1">
+                    <a href="{{ url('/dashboard') }}" class="flex items-center gap-3 bg-[#0a1d37] text-white px-4 py-2.5 rounded-xl font-bold transition shadow-md border border-slate-800/20">
+                        <i class="fa-solid fa-house text-cyan-300 w-5"></i> Home
+                    </a>
+                    
+                    <a href="{{ route('ketersediaan.index') }}" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-car-side text-white/60 w-5"></i> Ketersediaan Mobil
+                    </a>
+                    
+                    <a href="{{ route('pesan.index') }}" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-comments text-white/60 w-5"></i> Pesan
+                    </a>
+                    
+                    <a href="{{ route('lokasi.index') }}" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-location-dot text-white/60 w-5"></i> Lokasi & Antar Jemput
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-clock-rotate-left text-white/60 w-5"></i> Riwayat Pemesanan
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-wallet text-white/60 w-5"></i> Payment
+                    </a>
+                    
+                    <a href="#" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                        <i class="fa-solid fa-gear text-white/60 w-5"></i> Pengaturan
+                    </a>
+
+                    {{-- MENU KHUSUS ADMIN (DESKTOP) --}}
+                    @if(Auth::check() && strtolower(Auth::user()->role ?? '') === 'admin')
+                        <div class="pt-3 mt-3 border-t border-white/20">
+                            <p class="text-[10px] font-bold text-amber-300 tracking-widest uppercase mb-2 px-2">Panel Admin</p>
+                            <a href="{{ route('admin.peminjaman.index') }}" class="flex items-center gap-3 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-400/30 px-4 py-2.5 rounded-xl font-bold transition shadow-sm">
+                                <i class="fa-solid fa-clipboard-check text-amber-300 w-5"></i> Persetujuan Pinjam
+                            </a>
+                        </div>
+                    @endif
+                </nav>
+            </div>
+
+            <div class="border-t border-white/20 pt-4 space-y-3 z-10">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#05152b] border border-white/20 flex items-center justify-center text-white font-black uppercase">
+                            {{ substr(Auth::user()->name ?? 'D', 0, 1) }}
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-black truncate max-w-[120px]">{{ Auth::user()->name ?? 'Diskominfo Kubar' }}</h4>
+                            <p class="text-[10px] text-amber-300 font-bold uppercase">
+                                {{ Auth::user()->role ?? 'Pegawai Internal' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <form action="{{ url('/logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" 
+                                onclick="return confirm('Apakah Anda yakin ingin keluar / ganti akun?')"
+                                title="Logout / Ganti Akun"
+                                class="p-2 text-red-200 hover:text-white hover:bg-red-500/30 rounded-lg transition">
+                            <i class="fa-solid fa-power-off text-base"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <form action="{{ url('/logout') }}" method="POST" class="block">
+                    @csrf
+                    <button type="submit" 
+                            onclick="return confirm('Apakah Anda yakin ingin keluar / ganti akun?')"
+                            class="w-full text-left text-xs text-amber-300 hover:text-amber-200 font-bold transition py-1 flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar / Ganti Akun
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col bg-gradient-to-tr from-[#1e40af]/5 via-white to-white overflow-y-auto">
+            <header class="bg-white border-b border-slate-200/80 px-8 py-4 flex justify-between items-center shadow-sm">
                 <div>
-                    <h2 class="text-sm font-black text-white uppercase tracking-wider">Mobi-Kubar</h2>
-                    <p class="text-[10px] text-slate-500 font-medium">Diskominfo App</p>
+                    <span class="text-xs font-black text-[#2563eb] tracking-widest uppercase block">Internal System</span>
+                    <h2 class="text-xl font-black text-slate-900">Dashboard Utama Pelayanan</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="relative p-2 text-slate-400 hover:text-[#2563eb] transition">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <div class="bg-amber-500 text-slate-950 px-4 py-1.5 rounded-full text-xs font-black tracking-wide shadow-sm border border-amber-400">
+                        <i class="fa-solid fa-map-marker-alt mr-1"></i> Kutai Barat, Kaltim
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8 space-y-8 max-w-6xl flex-1">
+                @if(session('success'))
+                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-sm flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <div class="bg-gradient-to-r from-[#1b4cc7] via-[#2563eb] to-[#1e40af] text-white p-8 rounded-3xl shadow-xl flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 pointer-events-none ethnic-pattern"></div>
+                    <div class="space-y-3 z-10">
+                        <div class="inline-block bg-amber-500/30 border border-amber-400/40 px-3 py-1 rounded-xl text-[10px] font-black tracking-widest text-amber-300 uppercase mb-1">
+                            <i class="fa-solid fa-award mr-1"></i> TANAA PURAI NGERIMAN
+                        </div>
+                        <h3 class="text-3xl font-black tracking-tight leading-tight">Selamat Datang,<br><span class="text-amber-300">{{ Auth::user()->name ?? 'Diskominfo Kutai Barat' }}</span></h3>
+                        <p class="text-blue-100 max-w-xl text-xs font-medium leading-relaxed">Akses layanan operasional internal dinas komunikasi dan informatika dalam satu pintu aplikasi terintegrasi.</p>
+                    </div>
+                    
+                    <div class="bg-[#0a1d37] p-6 rounded-2xl border border-slate-800/40 text-left w-64 z-10 shadow-2xl relative overflow-hidden">
+                        <h4 class="font-black text-sm tracking-wider mb-1 leading-tight text-white">BANTUAN<br>TERSEDIA<br>DISINI</h4>
+                        <p class="text-[11px] text-slate-400 mb-4 font-medium">Butuh bantuan unit armada?</p>
+                        <a href="{{ route('pesan.index') }}" class="inline-block bg-[#00a8cc] text-white px-5 py-2 rounded-xl text-xs font-black hover:bg-[#00bbf0] transition shadow-md w-full text-center">Hubungi Admin</a>
+                        <div class="absolute right-[-10px] bottom-[-15px] text-white/5 text-5xl font-black select-none pointer-events-none">
+                            <i class="fa-solid fa-headset"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-black text-xs tracking-widest text-slate-400 uppercase mb-4">KATEGORI LAYANAN UTAMA</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                        
+                        <a href="{{ route('ketersediaan.index') }}" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                            <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                <i class="fa-solid fa-car-side text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-black text-white text-sm mb-0.5">Ketersediaan Mobil</h5>
+                                <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Cek jadwal kosong armada dan buat permohonan dinas.</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('pesan.index') }}" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                            <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                <i class="fa-solid fa-comments text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-black text-white text-sm mb-0.5">Pesan</h5>
+                                <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Hubungi koordinasi internal tim operasional dinas.</p>
+                            </div>
+                        </a>
+
+                        <div class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                            <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                <i class="fa-solid fa-gear text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-black text-white text-sm mb-0.5">Pengaturan</h5>
+                                <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Konfigurasi akun data profil pegawai internal dinas.</p>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('lokasi.index') }}" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                            <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                <i class="fa-solid fa-location-dot text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-black text-white text-sm mb-0.5">Lokasi & Antar Jemput</h5>
+                                <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Pantau titik koordinat penjemputan mobil dinas.</p>
+                            </div>
+                        </a>
+
+                        <div class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                            <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-black text-white text-sm mb-0.5">Riwayat Pemesanan</h5>
+                                <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Lihat kembali seluruh rekaman arsip perjalanan dinas.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                            <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                <i class="fa-solid fa-wallet text-xl"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-black text-white text-sm mb-0.5">Payment</h5>
+                                <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Monitoring anggaran tol atau klaim bensin perjalanan.</p>
+                            </div>
+                        </div>
+
+                        {{-- TOMBOL KARTU LAYANAN PERSETUJUAN (KHUSUS ADMIN) --}}
+                        @if(Auth::check() && strtolower(Auth::user()->role ?? '') === 'admin')
+                            <a href="{{ route('admin.peminjaman.index') }}" class="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-5 rounded-2xl shadow-lg border border-amber-500/40 hover:from-amber-500 hover:to-amber-600 transition flex items-start gap-4 cursor-pointer group col-span-1 sm:col-span-2 lg:col-span-3">
+                                <div class="bg-[#05152b] p-3.5 rounded-xl text-amber-400 shadow-md group-hover:scale-105 transition flex-shrink-0">
+                                    <i class="fa-solid fa-clipboard-check text-xl"></i>
+                                </div>
+                                <div>
+                                    <h5 class="font-black text-amber-300 text-sm mb-0.5">Persetujuan Pinjam (Admin Panel)</h5>
+                                    <p class="text-[11px] text-amber-100/90 leading-normal font-medium">Kelola, setujui, atau tolak permohonan peminjaman mobil dinas dari pegawai.</p>
+                                </div>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="bg-[#05152b] text-white p-5 rounded-2xl border border-slate-900/40 shadow-xl flex justify-between items-center">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-[#103bb3] p-3 rounded-xl text-cyan-300 shadow-md">
+                            <i class="fa-solid fa-leaf text-xl"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-black text-white text-base mb-0.5">Kebun dan Halaman Dinas</h5>
+                            <p class="text-xs text-slate-400 font-medium">Layanan kebersihan area perkantoran Diskominfo Kutai Barat.</p>
+                        </div>
+                    </div>
+                    <span class="bg-[#00a8cc] text-white px-5 py-2 rounded-full text-xs font-black shadow-md">Layanan Pendukung</span>
                 </div>
             </div>
             
-            <nav class="p-4 space-y-2">
-                <a href="/dashboard" class="flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-md transition">
-                    <i class="fa-solid fa-house text-base"></i> Home
-                </a>
-                <a href="/pinjam" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl font-medium text-sm transition">
-                    <i class="fa-solid fa-car-rear text-base"></i> Pinjam Mobil
-                </a>
-                <a href="/pesanan" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl font-medium text-sm transition">
-                    <i class="fa-solid fa-receipt text-base"></i> Pesanan Anda
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl font-medium text-sm transition">
-                    <i class="fa-solid fa-bell text-base"></i> Notifikasi
-                </a>
-            </nav>
-        </div>
+            <footer class="mt-auto py-4 text-center text-xs text-slate-400 border-t border-slate-200 bg-white font-medium">
+                &copy; {{ date('Y') }} Diskominfo Kutai Barat. All Rights Reserved.
+            </footer>
+        </main>
+    </div>
 
-        <div class="p-4 border-t border-slate-800">
-            <div class="flex items-center gap-3 p-2 bg-slate-950/40 rounded-xl">
-                <div class="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-xs">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <div class="overflow-hidden">
-                    <h4 class="text-xs font-bold text-white truncate">Diskominfo Kubar</h4>
-                    <p class="text-[10px] text-slate-500 truncate">Pegawai Internal</p>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-
-    <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
+    <div class="md:hidden min-h-screen bg-gradient-to-b from-[#1b4cc7] via-[#2563eb] to-[#1e40af] text-white flex flex-col pb-24 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none ethnic-pattern"></div>
         
-        <header class="bg-white border-b border-gray-200 h-16 flex justify-between items-center px-4 md:px-8 sticky top-0 z-40 shadow-sm">
-            <button id="btnHamburger" class="w-10 h-10 bg-gray-50 hover:bg-gray-100 rounded-xl flex md:hidden items-center justify-center text-gray-700 text-lg transition shadow-sm">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-            
+        <header class="p-6 flex justify-between items-start z-10">
             <div>
-                <div class="md:hidden text-center pr-10 flex-1">
-                    <h1 class="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">Mobi-Kubar</h1>
-                    <span class="text-[9px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-bold border border-blue-100">Diskominfo</span>
-                </div>
-                <div class="hidden md:block">
-                    <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Internal System</h3>
-                    <h1 class="text-sm font-bold text-gray-800">Dashboard Utama Pelayanan</h1>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <button class="text-gray-500 hover:text-blue-600 transition relative">
-                    <i class="fa-solid fa-bell text-lg"></i>
-                    <span class="w-2 h-2 bg-red-500 rounded-full absolute -top-0.5 -right-0.5"></span>
-                </button>
-                <div class="h-4 w-[1px] bg-gray-300 hidden md:block"></div>
-                <span class="text-xs font-bold text-gray-700 bg-gray-100 px-3 py-1.5 rounded-lg hidden md:block">Kutai Barat, Kaltim</span>
+                <form action="{{ url('/logout') }}" method="POST" id="logout-form-mobile">
+                    @csrf
+                    <button type="submit" 
+                            onclick="return confirm('Apakah Anda yakin ingin keluar / ganti akun?')"
+                            class="text-white text-2xl mb-4 hover:opacity-85 transition" 
+                            title="Keluar / Ganti Akun">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </form>
+                
+                <h2 class="text-4xl font-extrabold text-white leading-tight tracking-tight">Selamat<br>Datang,</h2>
+                <p class="text-white font-extrabold text-base mt-2 tracking-wide drop-shadow">
+                    {!! nl2br(e(Auth::user()->name ?? "Diskominfo\nKutai Barat")) !!}
+                </p>
+                <span class="inline-block bg-amber-400/30 text-amber-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase mt-1 border border-amber-300/30">
+                    {{ Auth::user()->role ?? 'Pegawai' }}
+                </span>
             </div>
         </header>
 
-        <main class="p-5 md:p-8 flex-1 max-w-md md:max-w-5xl w-full mx-auto space-y-6 md:space-y-8">
-            
-            <div class="md:hidden">
-                <h2 class="text-xs text-gray-400 font-bold uppercase tracking-wider">Selamat Datang,</h2>
-                <h1 class="text-xl font-black text-gray-800 tracking-wide">Diskominfo Kutai Barat</h1>
-            </div>
+        <div class="mx-6 mb-3 bg-amber-500/20 border border-amber-400/30 px-4 py-1.5 rounded-xl text-center z-10">
+            <p class="text-[10px] font-bold tracking-widest text-amber-300 uppercase"><i class="fa-solid fa-mountain"></i> Tanaa Purai Ngeriman</p>
+        </div>
 
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 md:from-blue-600 md:to-indigo-700 bg-gradient-to-r max-md:from-amber-500 max-md:to-orange-600 rounded-2xl p-6 md:p-8 text-white shadow-md flex justify-between items-center relative overflow-hidden">
-                <div class="max-w-xl z-10">
-                    <span class="text-xs font-bold uppercase tracking-widest text-blue-200 md:text-blue-200 max-md:text-orange-100">Selamat Datang,</span>
-                    <h2 class="text-xl md:text-3xl font-black mt-1 tracking-wide max-md:hidden">Diskominfo Kutai Barat</h2>
-                    <h2 class="text-lg font-extrabold uppercase leading-tight md:hidden">Bantuan Tersedia Disini</h2>
-                    <p class="text-xs text-blue-100 mt-2 leading-relaxed opacity-90 max-w-md max-md:hidden">
-                        Akses layanan operasional internal dinas komunikasi dan informatika dalam satu pintu aplikasi terintegrasi.
-                    </p>
-                    <button class="bg-white text-orange-600 font-bold text-[11px] px-4 py-2 rounded-xl shadow hover:bg-orange-50 transition transform active:scale-95 mt-3 md:hidden">
-                        Selengkapnya
-                    </button>
-                </div>
-                
-                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5 text-right hidden md:block z-10 max-w-xs">
-                    <h4 class="text-sm font-extrabold uppercase tracking-wide mb-1">Bantuan Tersedia</h4>
-                    <p class="text-[11px] text-blue-100 mb-3">Butuh bantuan teknis terkait unit armada?</p>
-                    <button class="bg-white text-blue-700 font-bold text-xs px-4 py-2 rounded-lg shadow hover:bg-blue-50 transition">
-                        Hubungi Admin
-                    </button>
-                </div>
-                <i class="fa-solid fa-shield-halved text-[12rem] text-white/5 absolute -right-6 -bottom-10 transform -rotate-12 max-md:hidden"></i>
-                <i class="fa-solid fa-headset text-7xl text-white/20 absolute -right-2 -bottom-2 transform rotate-12 md:hidden"></i>
-            </div>
-
+        <div class="mx-6 mb-8 bg-[#0a1d37] text-white p-6 rounded-3xl flex justify-between items-center shadow-2xl relative overflow-hidden border border-slate-800/50 z-10">
             <div>
-                <h4 class="text-xs font-extrabold text-gray-800 uppercase tracking-widest mb-4">Kategori Layanan Utama</h4>
-                <div class="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6">
-                    
-                    <a href="/pinjam" class="bg-white max-md:bg-blue-50/50 border border-gray-200 max-md:border-blue-100 hover:border-blue-400 p-4 md:p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-5 text-center md:text-left transition shadow-sm hover:shadow-md group">
-                        <div class="w-12 h-12 md:w-14 md:h-14 bg-blue-500 md:bg-blue-100 text-white md:text-blue-600 md:group-hover:bg-blue-600 md:group-hover:text-white rounded-full md:rounded-xl flex items-center justify-center text-xl md:text-2xl shadow-sm transition duration-300">
-                            <i class="fa-solid fa-car"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xs md:text-sm font-bold text-gray-700 md:text-gray-800">Ketersediaan Mobil</h4>
-                            <p class="text-xs text-gray-500 mt-1 hidden md:block">Cek jadwal kosong armada dan buat formulir izin peminjaman dinas.</p>
-                        </div>
-                    </a>
-
-                    <a href="/pesanan" class="bg-white max-md:bg-emerald-50/50 border border-gray-200 max-md:border-emerald-100 hover:border-emerald-400 p-4 md:p-6 rounded-2xl flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-5 text-center md:text-left transition shadow-sm hover:shadow-md group">
-                        <div class="w-12 h-12 md:w-14 md:h-14 bg-emerald-500 md:bg-emerald-100 text-white md:text-emerald-600 md:group-hover:bg-emerald-600 md:group-hover:text-white rounded-full md:rounded-xl flex items-center justify-center text-xl md:text-2xl shadow-sm transition duration-300">
-                            <i class="fa-solid fa-receipt"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xs md:text-sm font-bold text-gray-700 md:text-gray-800">Pesanan Anda</h4>
-                            <p class="text-xs text-gray-500 mt-1 hidden md:block">Pantau proses verifikasi permohonan kendaraan oleh Kabag diskominfo.</p>
-                        </div>
-                    </a>
-
-                </div>
+                <h4 class="font-black text-base tracking-wider leading-tight">BANTUAN<br>TERSEDIA<br>DISINI</h4>
+                <a href="{{ route('pesan.index') }}" class="text-xs font-bold text-cyan-400 flex items-center gap-1.5 hover:underline mt-3">Selengkapnya <i class="fa-solid fa-circle-arrow-right"></i></a>
             </div>
-
-            <div class="bg-white border border-gray-200 rounded-2xl p-4 md:p-6 shadow-sm flex items-center justify-between">
-                <div class="flex items-center gap-3 md:gap-4">
-                    <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-leaf"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-xs md:text-sm font-bold text-gray-800">Kebun dan Halaman Dinas</h4>
-                        <p class="text-[10px] md:text-xs text-gray-400 md:text-gray-500 mt-0.5">Layanan kebersihan area perkantoran Diskominfo Kutai Barat.</p>
-                    </div>
-                </div>
-                <span class="text-[9px] md:text-[11px] bg-amber-50 text-amber-700 px-2 py-1 md:px-3 md:py-1.5 font-bold rounded-lg border border-amber-100 shrink-0">Layanan Pendukung</span>
+            <div class="absolute right-[-5px] bottom-[-15px] text-white/5 text-7xl font-black select-none pointer-events-none">
+                <i class="fa-solid fa-headset"></i>
             </div>
+        </div>
 
-        </main>
+        <div class="px-6 space-y-6 flex-1 z-10">
+            <h4 class="font-black text-xs text-white/90 tracking-widest uppercase">KATEGORI LAYANAN</h4>
+            
+            <div class="grid grid-cols-3 gap-4">
+                <a href="{{ route('ketersediaan.index') }}" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                    <i class="fa-solid fa-car text-xl text-cyan-300"></i>
+                    <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Ketersediaan<br>Mobil</span>
+                </a>
 
-        <footer class="bg-white border-t border-gray-200 py-4 text-center text-[10px] text-gray-400 mt-auto hidden md:block">
-            &copy; 2026 Diskominfo Kutai Barat. All Rights Reserved.
-        </footer>
-        <footer class="text-center text-[10px] text-gray-400 pb-4 md:hidden">
-            &copy; 2026 Diskominfo Kutai Barat.
-        </footer>
+                <a href="{{ route('pesan.index') }}" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                    <i class="fa-solid fa-comments text-xl text-cyan-300"></i>
+                    <span class="text-[9px] font-black uppercase tracking-tight block">Pesan</span>
+                </a>
 
-    </div>
-
-
-    <div id="sidebarBackdrop" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
-
-    <aside id="sidebarMenu" class="fixed top-0 bottom-0 left-0 w-72 bg-slate-900 text-slate-300 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl md:hidden">
-        <div>
-            <div class="p-5 border-b border-slate-800 flex justify-between items-center">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 bg-blue-600 text-white rounded-lg flex items-center justify-center text-sm shadow-md">
-                        <i class="fa-solid fa-car-side"></i>
-                    </div>
-                    <h2 class="text-xs font-black text-white uppercase tracking-wider">Mobi-Kubar</h2>
-                </div>
-                <button id="btnCloseSidebar" class="w-8 h-8 hover:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:text-white transition">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <button class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                    <i class="fa-solid fa-gear text-xl text-cyan-300"></i>
+                    <span class="text-[9px] font-black uppercase tracking-tight block">Pengaturan</span>
                 </button>
+                
+                <a href="{{ route('lokasi.index') }}" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                    <i class="fa-solid fa-location-dot text-xl text-cyan-300"></i>
+                    <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Lokasi & Antar<br>Jemput</span>
+                </a>
+                
+                <button class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                    <i class="fa-solid fa-clock-rotate-left text-xl text-cyan-300"></i>
+                    <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Riwayat<br>Pemesanan</span>
+                </button>
+
+                <button class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                    <i class="fa-solid fa-wallet text-xl text-cyan-300"></i>
+                    <span class="text-[9px] font-black uppercase tracking-tight block">Payment</span>
+                </button>
+
+                {{-- MENU ADMIN MOBILE --}}
+                @if(Auth::check() && strtolower(Auth::user()->role ?? '') === 'admin')
+                    <a href="{{ route('admin.peminjaman.index') }}" class="bg-amber-600 text-white p-4 rounded-2xl shadow-xl border border-amber-400/40 flex flex-col items-center justify-center text-center gap-2 col-span-3 active:scale-95 transition">
+                        <i class="fa-solid fa-clipboard-check text-2xl text-amber-300"></i>
+                        <span class="text-xs font-black uppercase tracking-wider block">Persetujuan Pinjam (Admin)</span>
+                    </a>
+                @endif
             </div>
 
-            <nav class="p-4 space-y-1.5">
-                <a href="/dashboard" class="flex items-center gap-3.5 px-4 py-3 bg-blue-600 text-white rounded-xl font-bold text-xs shadow-md transition">
-                    <i class="fa-solid fa-house text-sm"></i> Home / Dashboard
-                </a>
-                <a href="/pinjam" class="flex items-center gap-3.5 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl font-bold text-xs transition">
-                    <i class="fa-solid fa-car-rear text-sm"></i> Formulir Pinjam Mobil
-                </a>
-                <a href="/pesanan" class="flex items-center gap-3.5 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl font-bold text-xs transition">
-                    <i class="fa-solid fa-receipt text-sm"></i> Status Pesanan Anda
-                </a>
-                <a href="/notifikasi" class="flex items-center gap-3.5 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl font-bold text-xs transition">
-                    <i class="fa-solid fa-bell text-sm"></i> Notifikasi Masuk
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 border-t border-slate-800 bg-slate-950/30">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-xs">
-                    <i class="fa-solid fa-user"></i>
-                </div>
+            <div class="bg-[#05152b] text-white p-5 rounded-3xl flex justify-between items-center shadow-2xl border border-slate-900/40">
                 <div>
-                    <h4 class="text-xs font-bold text-white leading-tight">Diskominfo Kubar</h4>
-                    <p class="text-[9px] text-slate-500 font-medium">Pegawai Internal</p>
+                    <h5 class="text-xl font-black tracking-tight leading-tight">Pesanan Anda</h5>
+                    <p class="text-xs text-slate-400 mt-0.5">Kebun dan Halaman</p>
                 </div>
+                <button class="bg-[#00a8cc] text-white font-black text-xs px-6 py-2.5 rounded-full hover:bg-[#00bbf0] transition active:scale-95 shadow-md shadow-cyan-500/20">Buka</button>
             </div>
         </div>
-    </aside>
 
-    <script>
-        const btnHamburger = document.getElementById('btnHamburger');
-        const btnCloseSidebar = document.getElementById('btnCloseSidebar');
-        const sidebarMenu = document.getElementById('sidebarMenu');
-        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-
-        function openSidebar() {
-            sidebarBackdrop.classList.remove('hidden');
-            setTimeout(() => {
-                sidebarBackdrop.classList.remove('opacity-0');
-                sidebarMenu.classList.remove('-translate-x-full');
-            }, 10);
-        }
-
-        function closeSidebar() {
-            sidebarMenu.classList.add('-translate-x-full');
-            sidebarBackdrop.classList.add('opacity-0');
-            setTimeout(() => {
-                sidebarBackdrop.classList.add('hidden');
-            }, 300);
-        }
-
-        if(btnHamburger) btnHamburger.addEventListener('click', openSidebar);
-        if(btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeSidebar);
-        if(sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
-    </script>
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-3 px-12 flex justify-between items-center z-50 rounded-t-3xl shadow-[0_-8px_30px_rgb(0,0,0,0.08)]">
+            <button class="text-slate-400 hover:text-blue-600 p-2 text-xl transition">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <a href="{{ url('/dashboard') }}" class="text-blue-600 p-2 text-2xl transition">
+                <i class="fa-solid fa-house"></i>
+            </a>
+        </div>
+    </div>
 
 </body>
 </html>
