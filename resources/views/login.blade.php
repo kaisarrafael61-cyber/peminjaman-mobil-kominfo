@@ -103,18 +103,6 @@
                         Login
                     </button>
                 </form>
-
-                <div class="flex items-center justify-between mt-1.5 px-1 text-[11px] md:text-xs font-bold">
-                    <p class="text-gray-400 font-semibold">
-                        Don't Have an Account? 
-                        <a href="{{ route('register') }}" class="text-[#2B6CB0] font-bold hover:underline transition pl-0.5">
-                            Sign Up
-                        </a>
-                    </p>
-                    <a href="{{ route('password.forgot') }}" class="text-gray-400 font-semibold hover:underline transition">
-                        Forgot Password?
-                    </a>
-                </div>
             </div>
 
             <div class="w-full max-w-md mx-auto pt-3 md:pt-0">
