@@ -105,7 +105,9 @@
                 @php 
                     $car = (object) $item; 
                     $carId = $car->id ?? $car->car_id ?? $car->id_mobil ?? 0;
-                    $carStatus = $car->status ?? 'Tersedia';
+                    
+                    // DI SINI HACK-NYA: Kita paksa status semua mobil jadi 'Tersedia'
+                    $carStatus = 'Tersedia'; 
                 @endphp
                 <tr class="hover:bg-slate-50 transition">
                     <td class="p-4 font-bold text-slate-800">{{ $car->nama ?? $car->name ?? '-' }}</td>
