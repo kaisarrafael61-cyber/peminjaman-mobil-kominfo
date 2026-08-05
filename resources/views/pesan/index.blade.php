@@ -83,16 +83,17 @@
             <section id="contact-panel" class="w-full md:w-80 lg:w-96 bg-white border-r border-slate-200 flex-col h-full flex-shrink-0 z-10 {{ (isset($activeContact) || request('receiverId')) ? 'hidden md:flex' : 'flex' }}">
                 
                 <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-white">
-                    <div class="flex items-center gap-3">
-                        <a href="{{ url('/dashboard') }}" class="md:hidden text-slate-600 hover:text-blue-600">
-                            <i class="fa-solid fa-arrow-left text-lg"></i>
-                        </a>
-                        <h2 class="text-xl font-black text-slate-800 tracking-tight">Pesan</h2>
-                    </div>
-                    <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2.5 py-1 rounded-full">
-                        {{ count($contacts ?? []) }} Kontak
-                    </span>
-                </div>
+  <div class="flex items-center gap-3">
+    <a href="{{ url('/dashboard') }}" class="text-slate-600 hover:text-blue-600 cursor-pointer p-1">
+      <i class="fa-solid fa-arrow-left text-lg"></i>
+    </a>
+    <h2 class="text-xl font-black text-slate-800 tracking-tight">Pesan</h2>
+  </div>
+  
+  <span class="bg-blue-100 text-blue-600 text-xs font-bold px-2.5 py-1 rounded-full">
+    {{ count($contacts ?? []) }} Kontak
+  </span>
+</div>
 
                 <div class="p-3 bg-slate-50 border-b border-slate-100">
                     <div class="relative">
