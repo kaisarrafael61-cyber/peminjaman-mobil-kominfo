@@ -72,6 +72,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pesan/{receiverId?}', [MessageController::class, 'index'])->name('pesan.index');
     Route::post('/pesan/send', [MessageController::class, 'store'])->name('pesan.send');
 
+    // === PENGATURAN AKUN ===
+    Route::get('/pengaturan', function () {
+        return view('pengaturan.index');
+    })->name('pengaturan.index');
+    
+    Route::post('/pengaturan/profile', [PeminjamanController::class, 'updateProfile'])->name('pengaturan.profile.update');
+    Route::post('/pengaturan/password', [PeminjamanController::class, 'updatePassword'])->name('pengaturan.password.update');
+
     // Logout
     Route::post('/logout', function (Request $request) {
         Auth::logout();

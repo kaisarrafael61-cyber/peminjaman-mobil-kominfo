@@ -63,7 +63,7 @@
                         <i class="fa-solid fa-wallet text-white/60 w-5"></i> Payment
                     </a>
                     
-                    <a href="#" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                    <a href="{{ route('pengaturan.index') }}" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
                         <i class="fa-solid fa-gear text-white/60 w-5"></i> Pengaturan
                     </a>
 
@@ -184,7 +184,7 @@
                             </div>
                         </a>
 
-                        <div class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                        <a href="{{ route('pengaturan.index') }}" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
                             <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
                                 <i class="fa-solid fa-gear text-xl"></i>
                             </div>
@@ -192,7 +192,7 @@
                                 <h5 class="font-black text-white text-sm mb-0.5">Pengaturan</h5>
                                 <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Konfigurasi akun data profil pegawai internal dinas.</p>
                             </div>
-                        </div>
+                        </a>
 
                         <a href="{{ route('lokasi.index') }}" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
                             <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
@@ -204,7 +204,7 @@
                             </div>
                         </a>
 
-                        <div class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                        <a href="#" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
                             <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
                                 <i class="fa-solid fa-clock-rotate-left text-xl"></i>
                             </div>
@@ -212,9 +212,9 @@
                                 <h5 class="font-black text-white text-sm mb-0.5">Riwayat Pemesanan</h5>
                                 <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Lihat kembali seluruh rekaman arsip perjalanan dinas.</p>
                             </div>
-                        </div>
+                        </a>
 
-                        <div class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                        <a href="#" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
                             <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
                                 <i class="fa-solid fa-wallet text-xl"></i>
                             </div>
@@ -222,7 +222,7 @@
                                 <h5 class="font-black text-white text-sm mb-0.5">Payment</h5>
                                 <p class="text-[11px] text-blue-100/80 leading-normal font-medium">Monitoring anggaran tol atau klaim bensin perjalanan.</p>
                             </div>
-                        </div>
+                        </a>
 
                         {{-- TOMBOL KARTU LAYANAN PERSETUJUAN (KHUSUS ADMIN) --}}
                         @if(Auth::check() && strtolower(Auth::user()->role ?? '') === 'admin')
@@ -312,25 +312,25 @@
                     <span class="text-[9px] font-black uppercase tracking-tight block">Pesan</span>
                 </a>
 
-                <button class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                <a href="{{ route('pengaturan.index') }}" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
                     <i class="fa-solid fa-gear text-xl text-cyan-300"></i>
                     <span class="text-[9px] font-black uppercase tracking-tight block">Pengaturan</span>
-                </button>
+                </a>
                 
                 <a href="{{ route('lokasi.index') }}" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
                     <i class="fa-solid fa-location-dot text-xl text-cyan-300"></i>
                     <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Lokasi & Antar<br>Jemput</span>
                 </a>
                 
-                <button class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                <a href="#" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
                     <i class="fa-solid fa-clock-rotate-left text-xl text-cyan-300"></i>
                     <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Riwayat<br>Pemesanan</span>
-                </button>
+                </a>
 
-                <button class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                <a href="#" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
                     <i class="fa-solid fa-wallet text-xl text-cyan-300"></i>
                     <span class="text-[9px] font-black uppercase tracking-tight block">Payment</span>
-                </button>
+                </a>
 
                 {{-- MENU ADMIN MOBILE --}}
                 @if(Auth::check() && strtolower(Auth::user()->role ?? '') === 'admin')

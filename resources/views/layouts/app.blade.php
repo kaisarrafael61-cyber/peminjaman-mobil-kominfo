@@ -12,10 +12,11 @@
 </head>
 <body class="bg-slate-100 font-sans antialiased text-slate-800">
 
-    <div class="flex min-h-screen relative">
+    <div class="flex min-h-screen relative overflow-x-hidden">
         
+        {{-- SIDEBAR UTAMA --}}
         <aside id="app-sidebar" 
-               class="fixed inset-y-0 left-0 z-50 w-64 bg-blue-600 text-white min-h-screen p-4 flex flex-col justify-between shrink-0 shadow-lg transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static">
+               class="fixed md:static inset-y-0 left-0 z-50 w-64 bg-blue-600 text-white min-h-screen p-4 flex flex-col justify-between shrink-0 shadow-lg transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
             <div>
                 <div class="flex items-center justify-between px-2 py-4 mb-2 md:mb-6">
                     <div class="flex items-center gap-3">
@@ -27,43 +28,57 @@
                             <p class="text-[10px] text-blue-200 font-bold uppercase tracking-wider">Diskominfo App</p>
                         </div>
                     </div>
-                    <button onclick="toggleSidebar()" class="md:hidden text-white/80 hover:text-white p-2 focus:outline-none">
-                        <i class="fa-solid fa-xmark text-xl"></i>
+                    {{-- Tombol Tutup (X) Mobile --}}
+                    <button type="button" id="btn-close-sidebar" class="md:hidden text-white/90 hover:text-white p-3 focus:outline-none cursor-pointer rounded-lg hover:bg-blue-700/50 transition">
+                        <i class="fa-solid fa-xmark text-2xl pointer-events-none"></i>
                     </button>
                 </div>
 
                 <nav class="space-y-1">
                     <p class="text-[10px] font-bold text-blue-200/80 uppercase tracking-widest px-3 mb-2">Menu Utama</p>
 
-                    {{-- Home / Dashboard --}}
                     <a href="{{ route('dashboard') }}" 
                        class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
                         <i class="fa-solid fa-house w-5 text-center"></i>
                         <span>Home</span>
                     </a>
 
-                    {{-- Ketersediaan Mobil --}}
                     <a href="{{ route('ketersediaan.index') }}" 
                        class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->routeIs('ketersediaan.*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
                         <i class="fa-solid fa-car-side w-5 text-center"></i>
                         <span>Ketersediaan Mobil</span>
                     </a>
 
-                    {{-- Pesan / Chat --}}
                     <a href="{{ route('pesan.index') }}" 
                        class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->routeIs('pesan.*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
                         <i class="fa-solid fa-comments w-5 text-center"></i>
                         <span>Pesan</span>
                     </a>
 
-                    {{-- Lokasi & Antar Jemput --}}
                     <a href="{{ route('lokasi.index') }}" 
                        class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->routeIs('lokasi.*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
                         <i class="fa-solid fa-location-dot w-5 text-center"></i>
                         <span>Lokasi & Antar Jemput</span>
                     </a>
 
-                    {{-- PANEL KHUSUS ADMIN --}}
+                    <a href="{{ url('/riwayat') }}" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->is('riwayat*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
+                        <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i>
+                        <span>Riwayat Pemesanan</span>
+                    </a>
+
+                    <a href="{{ url('/payment') }}" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->is('payment*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
+                        <i class="fa-solid fa-wallet w-5 text-center"></i>
+                        <span>Payment</span>
+                    </a>
+
+                    <a href="{{ url('/pengaturan') }}" 
+                       class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->is('pengaturan*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
+                        <i class="fa-solid fa-gear w-5 text-center"></i>
+                        <span>Pengaturan</span>
+                    </a>
+
                     @if(Auth::check() && strtolower(Auth::user()->role ?? '') === 'admin')
                         <div class="pt-4 mt-4 border-t border-white/20">
                             <p class="text-[10px] font-bold text-blue-200/80 uppercase tracking-widest px-3 mb-2">Panel Admin</p>
@@ -99,19 +114,21 @@
             @endauth
         </aside>
 
-        <div id="sidebar-overlay" onclick="toggleSidebar()" 
-             class="fixed inset-0 bg-black/50 z-40 hidden md:hidden">
+        {{-- OVERLAY GELAP MOBILE --}}
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden transition-opacity">
         </div>
 
+        {{-- KONTEN UTAMA --}}
         <main class="flex-1 p-4 md:p-6 overflow-y-auto bg-slate-100 w-full">
+            {{-- NAVBAR HEADER MOBILE --}}
             <div class="md:hidden flex items-center justify-between mb-4 bg-white p-3 rounded-xl shadow-sm">
                 <div class="flex items-center gap-2">
-                    <button onclick="toggleSidebar()" class="text-slate-700 hover:text-blue-600 p-2 focus:outline-none">
-                        <i class="fa-solid fa-bars text-xl"></i>
+                    <button type="button" id="btn-open-sidebar" class="text-slate-700 hover:text-blue-600 p-2.5 focus:outline-none cursor-pointer">
+                        <i class="fa-solid fa-bars text-xl pointer-events-none"></i>
                     </button>
                     <span class="font-black text-slate-800 text-sm">Mobi-Kubar</span>
                 </div>
-                <span class="text-xs font-semibold bg-blue-100 text-blue-600 px-2.5 py-1 rounded-full">
+                <span class="text-xs font-semibold bg-blue-100 text-blue-600 px-2.5 py-1 rounded-full truncate max-w-[140px]">
                     {{ Auth::user()->name ?? 'Guest' }}
                 </span>
             </div>
@@ -122,57 +139,48 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        function toggleSidebar() {
+        document.addEventListener('DOMContentLoaded', function () {
             const sidebar = document.getElementById('app-sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
-            if (sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
-                overlay.classList.remove('hidden');
-                overlay.classList.add('block');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                sidebar.classList.remove('translate-x-0');
-                overlay.classList.remove('block');
-                overlay.classList.add('hidden');
+            const btnOpen = document.getElementById('btn-open-sidebar');
+            const btnClose = document.getElementById('btn-close-sidebar');
+
+            function openSidebar() {
+                if (sidebar) sidebar.classList.remove('-translate-x-full');
+                if (overlay) {
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('block');
+                }
             }
-        }
 
-        // Gesture Swipe (Geser Layar)
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.touches[0].clientX;
-        }, {passive: true});
-
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].clientX;
-            handleSwipe();
-        }, {passive: true});
-
-        function handleSwipe() {
-            const sidebar = document.getElementById('app-sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            let diff = touchEndX - touchStartX;
-            
-            // Geser ke kanan dari tepi kiri layar (< 50px) untuk membuka
-            if (sidebar.classList.contains('-translate-x-full') && touchStartX < 50 && diff > 50) {
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
-                overlay.classList.remove('hidden');
-                overlay.classList.add('block');
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.add('-translate-x-full');
+                if (overlay) {
+                    overlay.classList.remove('block');
+                    overlay.classList.add('hidden');
+                }
             }
-            
-            // Geser ke kiri untuk menutup saat sidebar sedang terbuka
-            if (!sidebar.classList.contains('-translate-x-full') && diff < -50) {
-                sidebar.classList.add('-translate-x-full');
-                sidebar.classList.remove('translate-x-0');
-                overlay.classList.remove('block');
-                overlay.classList.add('hidden');
+
+            if (btnOpen) {
+                btnOpen.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openSidebar();
+                });
             }
-        }
+
+            if (btnClose) {
+                btnClose.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    closeSidebar();
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', () => {
+                    closeSidebar();
+                });
+            }
+        });
     </script>
     @stack('scripts')
 </body>
