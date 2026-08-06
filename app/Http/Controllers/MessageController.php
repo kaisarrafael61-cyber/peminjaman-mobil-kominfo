@@ -11,7 +11,7 @@ class MessageController extends Controller
 {
     public function index($receiverId = null)
     {
-        $authId = Auth::id(); // Menggunakan user yang login
+        $authId = Auth::id();
         $authUser = User::find($authId);
 
         // Filter kontak berdasarkan role
