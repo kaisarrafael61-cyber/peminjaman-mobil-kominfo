@@ -11,15 +11,17 @@ class MessageController extends Controller
 {
     public function index($receiverId = null)
     {
-        $authId = Auth::id() ?? 1;
+        $authId = Auth::id(); // Menggunakan user yang login
         $authUser = User::find($authId);
 
+        // Filter kontak berdasarkan role
         if ($authUser && $authUser->role === 'admin') {
             $contacts = User::where('id', '!=', $authId)->get();
         } else {
             $contacts = User::where('role', 'admin')->get();
         }
 
+        // Tentukan kontak yang sedang aktif (diklik)
         $activeContact = $receiverId ? User::find($receiverId) : $contacts->first();
 
         $messages = [];
@@ -42,7 +44,7 @@ class MessageController extends Controller
         ]);
 
         Message::create([
-            'sender_id' => Auth::id() ?? 1,
+            'sender_id' => Auth::id(),
             'receiver_id' => $request->receiver_id,
             'message' => $request->message,
         ]);
