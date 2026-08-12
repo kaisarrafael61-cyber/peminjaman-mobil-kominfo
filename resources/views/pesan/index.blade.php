@@ -139,7 +139,7 @@
                     <div class="p-3 px-4 bg-white border-b border-slate-200 flex items-center justify-between shadow-sm z-10">
                         <div class="flex items-center gap-3">
                             
-                            <a href="{{ route('pesan.index') }}" class="md:hidden text-slate-600 hover:text-blue-600 p-2 -ml-2 rounded-lg active:bg-slate-100 transition">
+                            <a href="{{ url('/dashboard') }}" class="md:hidden text-slate-600 hover:text-blue-600 p-2 -ml-2 rounded-lg active:bg-slate-100 transition">
                                 <i class="fa-solid fa-arrow-left text-lg"></i>
                             </a>
 
