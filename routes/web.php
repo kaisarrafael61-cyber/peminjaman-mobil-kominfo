@@ -54,7 +54,10 @@ Route::middleware(['auth'])->group(function () {
     // Ketersediaan Mobil
     Route::get('/ketersediaan-mobil', [CarController::class, 'index'])->name('ketersediaan.index');
 
+    // ==========================================
     // FITUR PEMINJAMAN MOBIL (USER)
+    // ==========================================
+    Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
     Route::post('/peminjaman/store', [PeminjamanController::class, 'store'])->name('peminjaman.store');
     
     // Route Pengembalian & Upload Foto Sesudah (Menggunakan match GET & POST untuk cegah error 405)
@@ -71,7 +74,10 @@ Route::middleware(['auth'])->group(function () {
     // Fitur Chat / Coordination Center
     Route::get('/pesan/{receiverId?}', [MessageController::class, 'index'])->name('pesan.index');
     Route::post('/pesan/send', [MessageController::class, 'store'])->name('pesan.send');
-Route::get('/riwayat-pesan', [App\Http\Controllers\PeminjamanController::class, 'riwayat'])->name('riwayat.index');
+    
+    // Riwayat Peminjaman
+    Route::get('/riwayat-pesan', [PeminjamanController::class, 'riwayat'])->name('riwayat.index');
+    
     // === PENGATURAN AKUN ===
     Route::get('/pengaturan', function () {
         return view('pengaturan.index');

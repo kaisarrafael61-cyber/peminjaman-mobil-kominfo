@@ -55,7 +55,7 @@
                         <i class="fa-solid fa-location-dot text-white/60 w-5"></i> Lokasi & Antar Jemput
                     </a>
                     
-                    <a href="#" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
+                    <a href="{{ route('peminjaman.index') }}" class="flex items-center gap-3 text-white/80 hover:bg-[#103bb3] hover:text-white px-4 py-2.5 rounded-xl font-bold transition">
                         <i class="fa-solid fa-clock-rotate-left text-white/60 w-5"></i> Riwayat Pemesanan
                     </a>
                     
@@ -204,7 +204,7 @@
                             </div>
                         </a>
 
-                        <a href="#" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
+                        <a href="{{ route('peminjaman.index') }}" class="bg-[#103bb3] text-white p-5 rounded-2xl shadow-lg border border-blue-600/30 hover:bg-[#1648cc] transition flex items-start gap-4 cursor-pointer group">
                             <div class="bg-[#05152b] p-3.5 rounded-xl text-cyan-300 shadow-md group-hover:scale-105 transition flex-shrink-0">
                                 <i class="fa-solid fa-clock-rotate-left text-xl"></i>
                             </div>
@@ -322,7 +322,7 @@
                     <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Lokasi & Antar<br>Jemput</span>
                 </a>
                 
-                <a href="#" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
+                <a href="{{ route('peminjaman.index') }}" class="bg-[#103bb3] text-white p-4 rounded-2xl shadow-xl border border-blue-600/30 flex flex-col items-center justify-center text-center gap-2 aspect-square active:scale-95 transition">
                     <i class="fa-solid fa-clock-rotate-left text-xl text-cyan-300"></i>
                     <span class="text-[9px] font-black uppercase tracking-tight block leading-tight">Riwayat<br>Pemesanan</span>
                 </a>

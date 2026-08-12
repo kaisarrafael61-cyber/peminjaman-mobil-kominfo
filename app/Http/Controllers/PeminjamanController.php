@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Schema;
 class PeminjamanController extends Controller
 {
     /**
+     * Menampilkan halaman utama peminjaman / riwayat peminjaman user.
+     */
+    public function index()
+    {
+        $riwayat = Peminjaman::where('user_id', Auth::id())->latest()->get();
+        return view('peminjaman.riwayat', compact('riwayat'));
+    }
+
+    /**
      * Menangani proses autentikasi login pengguna.
      */
     public function login(Request $request)
@@ -194,12 +203,15 @@ class PeminjamanController extends Controller
             }
         }
 
-              return redirect()->back()->with('success', 'Status pengajuan peminjaman berhasil diperbarui!');
-  }
+        return redirect()->back()->with('success', 'Status pengajuan peminjaman berhasil diperbarui!');
+    }
 
-  public function riwayat()
-  {
-      $riwayat = Peminjaman::where('user_id', auth()->id())->latest()->get();
-            return view('pesan.riwayat', compact('riwayat'));
-  }
- }
+    /**
+     * Menampilkan riwayat peminjaman (Alias/Alternatif method).
+     */
+    public function riwayat()
+    {
+        $riwayat = Peminjaman::where('user_id', Auth::id())->latest()->get();
+        return view('peminjaman.riwayat', compact('riwayat'));
+    }
+}
