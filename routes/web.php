@@ -71,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
     // Fitur Chat / Coordination Center
     Route::get('/pesan/{receiverId?}', [MessageController::class, 'index'])->name('pesan.index');
     Route::post('/pesan/send', [MessageController::class, 'store'])->name('pesan.send');
-
+Route::get('/riwayat-pesan', [App\Http\Controllers\PeminjamanController::class, 'riwayat'])->name('riwayat.index');
     // === PENGATURAN AKUN ===
     Route::get('/pengaturan', function () {
         return view('pengaturan.index');

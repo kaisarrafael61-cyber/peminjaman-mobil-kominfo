@@ -194,6 +194,12 @@ class PeminjamanController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Status pengajuan peminjaman berhasil diperbarui!');
-    }
-}
+              return redirect()->back()->with('success', 'Status pengajuan peminjaman berhasil diperbarui!');
+  }
+
+  public function riwayat()
+  {
+      $riwayat = Peminjaman::where('user_id', auth()->id())->latest()->get();
+            return view('pesan.riwayat', compact('riwayat'));
+  }
+ }

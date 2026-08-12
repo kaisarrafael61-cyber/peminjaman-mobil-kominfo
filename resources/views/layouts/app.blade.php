@@ -54,7 +54,11 @@
                         <i class="fa-solid fa-comments w-5 text-center"></i>
                         <span>Pesan</span>
                     </a>
-
+<a href="{{ route('riwayat.index') }}" 
+   class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm hover:bg-blue-700 transition">
+    <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i>
+    <span>Riwayat Pesan</span>
+</a>
                     <a href="{{ route('lokasi.index') }}" 
                        class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition {{ request()->routeIs('lokasi.*') ? 'bg-slate-900 text-white shadow-md' : 'text-white/90 hover:bg-blue-700' }}">
                         <i class="fa-solid fa-location-dot w-5 text-center"></i>
